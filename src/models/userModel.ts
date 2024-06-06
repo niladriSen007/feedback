@@ -38,7 +38,7 @@ const UserSchema: Schema<User> = new Schema(
         ref: "Answer",
       },
     ],
-    verificationTCode: {
+    verificationCode: {
       type: String,
       required: [true, "Please provide a verification token"],
     },

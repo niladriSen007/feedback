@@ -5,7 +5,7 @@ export interface User extends Document{
     name: string;
     email: string;
     isVerified: boolean;
-    verificationTCode: string;
+    verificationCode: string;
     verificationExpiry: Date;
     password: string;
     questionsRaised : Question[];
