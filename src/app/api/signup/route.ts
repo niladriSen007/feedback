@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
       })
       await newUser.save()
     }
-
+    console.log(email, name, verifyToken)
     const sendEmail = await sendVerificationEmail(email, name, verifyToken)
 
     if (!sendEmail.success) {

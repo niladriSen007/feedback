@@ -1,11 +1,13 @@
 import { z } from "zod"
 
+export const UserNameValidationSchema = z
+  .string()
+  .min(1, "Name must be at least 3 characters long")
+  .max(255, "Name must be less than 255 characters long")
+  .regex(/^[a-z0-9A-Z\s]*$/, "Name must contain only alphabets")
+
 export const SignUpSchema = z.object({
-  name: z
-    .string()
-    .min(3, "Name must be at least 3 characters long")
-    .max(255, "Name must be less than 255 characters long")
-    .regex(/^[a-zA-Z\s]*$/, "Name must contain only alphabets"),
+  name: UserNameValidationSchema,
   email: z
     .string()
     .email({ message: "Please provide a valid email" })

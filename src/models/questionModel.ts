@@ -20,7 +20,7 @@ const QuestionSchema: Schema<Question> = new Schema(
       type: Boolean,
       default: false,
     },
-    answer: [
+    answers: [
       {
         type: Schema.Types.ObjectId,
         ref: "Answer",
