@@ -7,7 +7,7 @@ export interface Question extends Document{
     qAuthor: User;
     isacceptingans: boolean;
     isclosed: boolean;
-    answer: Answer[];
+    answers: Answer[];
     createdAt: Date;
     updatedAt: Date;
 }
