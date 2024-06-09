@@ -43,10 +43,13 @@ export const AuthOptions: NextAuthOptions = {
             $or: [{ email: credentials?.email }, { name: credentials?.name }],
           })
 
+       
+
           if(!userExistance) {
             throw new Error("User not found")
           }
 
+          console.log(userExistance)
           if(!userExistance?.isVerified) {
             throw new Error("User not verified")
           }
@@ -55,7 +58,6 @@ export const AuthOptions: NextAuthOptions = {
           if(!validPass) {
             throw new Error("Invalid password")
           }
-
           return userExistance
         } catch (error: any) {
           throw new Error(error.message)

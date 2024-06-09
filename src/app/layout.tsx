@@ -1,9 +1,11 @@
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import "./globals.css"
 import AuthProvider from "@/context/AuthProvider"
+import type { Metadata } from "next"
+import { Signika_Negative } from "next/font/google"
+import "./globals.css"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Signika_Negative({ subsets: ["latin"],weight:['400'] })
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,8 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <AuthProvider>{children}</AuthProvider>
+      <body className={`bg-gradient-to-b from-black to-slate-900 text-white ${inter.className}`}>
+        <AuthProvider>
+          {children}
+          <ToastContainer />
+        </AuthProvider>
       </body>
     </html>
   )

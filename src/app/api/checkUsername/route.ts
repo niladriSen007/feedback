@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
 
     if (!validatedQuery.success) {
       const errors = validatedQuery.error.format().name?._errors || []
-      return NextResponse.json({ error: errors, status: 400, success: false })
+      return NextResponse.json({ error: errors[0], status: 400, success: false })
     }
 
     const userName = validatedQuery.data.name

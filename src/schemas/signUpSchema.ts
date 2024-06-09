@@ -2,9 +2,9 @@ import { z } from "zod"
 
 export const UserNameValidationSchema = z
   .string()
-  .min(1, "Name must be at least 3 characters long")
+  .min(1, "Name must be at least 1 character long")
   .max(255, "Name must be less than 255 characters long")
-  .regex(/^[a-z0-9A-Z\s]*$/, "Name must contain only alphabets")
+  .regex(/^[a-z0-9A-Z\s]*$/, "Name must contain only alphabets and numbers")
 
 export const SignUpSchema = z.object({
   name: UserNameValidationSchema,
