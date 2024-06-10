@@ -8,6 +8,7 @@ export interface Question extends Document{
     isacceptingans: boolean;
     isclosed: boolean;
     answers: Answer[];
+    media: string[];
     createdAt: Date;
     updatedAt: Date;
 }
