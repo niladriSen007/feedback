@@ -20,6 +20,11 @@ const QuestionSchema: Schema<Question> = new Schema(
       type: Boolean,
       default: false,
     },
+    media: [
+      {
+        type: String,
+      },
+    ],
     answers: [
       {
         type: Schema.Types.ObjectId,

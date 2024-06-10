@@ -2,34 +2,44 @@ import { dbConnection } from "@/lib/database/connection";
 import { QuestionModel } from "@/models/questionModel";
 import { UserModel } from "@/models/userModel";
 import { Question } from "@/types/question.type";
+import { getServerSession,User } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { use } from "react";
+import { AuthOptions } from "../auth/[...nextauth]/options";
+
+
 
 export async function POST(req:NextRequest){
   await dbConnection()
+  const session = await getServerSession(AuthOptions)
+  console.log(session,"session")
+  let userVal: User = session?.user as User
+
+  console.log(userVal)
   try {
-    const { question, username } = await req.json()
+    const { question,media } = await req.json()
+    console.log(question)
+
     if (!question) {
       return NextResponse.json({
-        message: "Question not found",
-        status: 200,
+        message: "Question must include some text",
+        status: 400,
         success: false,
       })
     }
 
-    if (!username) {
+    if (!userVal) {
       return NextResponse.json({
         message: "Username not found",
-        status: 200,
+        status: 400,
         success: false,
       })
     }
 
-    const user = await UserModel.findOne({ name: username,isVerified:true })
+    const user = await UserModel.findOne({ name: userVal?.name,isVerified:true })
     if (!user) {
       return NextResponse.json({
         message: "User not found",
-        status: 200,
+        status: 400,
         success: false,
       })
     }
@@ -40,10 +50,11 @@ export async function POST(req:NextRequest){
       isacceptingans:true,
       isclosed:false,
       answers:[],
+      media
     })
 
     await newQuestion.save()
-    user.questionsRaised.push(newQuestion)
+    user.questionsRaised.push(newQuestion as Question)
     await user.save()
 
     return NextResponse.json({

@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button"
 import { MoveRight } from "lucide-react"
 import { motion } from "framer-motion"
+import Link from "next/link"
 
 const page = () => {
   return (
@@ -26,9 +27,11 @@ const page = () => {
             One stop solution for resolving your doubts and get answers.
           </p>
           <section className="flex items-center justify-between gap-8">
+          <Link href={"/question/ask"} className="flex items-center">
             <Button className="bg-violet-600 text-white px-8 py-2 rounded-lg">
-              Ask questions <MoveRight className="ml-1" />
+             Ask questions <MoveRight className="ml-1" />
             </Button>
+            </Link>
             <Button className="bg-transparent border hover:bg-gray-400  text-white px-8 py-2 rounded-lg">
               Start demo{" "}
             </Button>
