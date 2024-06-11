@@ -10,6 +10,10 @@ import { useEffect, useState } from "react"
 const Page = () => {
   const [questions, setQuestions] = useState<Question[] | null>(null)
   const [loading, setLoading] = useState(true)
+  const [redirect, setRedirect] = useState({
+    redirect: false,
+    questionId: "-1",
+  })
   const [skip, setSkip] = useState(0)
   const [currentPageNo, setCurrentPageNo] = useState(1)
   const [limit] = useState(10)
@@ -24,13 +28,17 @@ const Page = () => {
 
   useEffect(() => {
     getAllQuestionsFromServer()
+    setRedirect({
+      redirect: false,
+      questionId: "-1",
+    })
   }, [])
 
   return (
     <div className="min-h-screen max-w-6xl mx-auto py-16">
       <h1 className="text-5xl font-bold ">All Questions</h1>
       <Button className="my-8">
-        <Link href={"/question/ask"}>Ask question</Link>
+        <Link href={"/question/ask"}>Ask a question</Link>
       </Button>
       <div className="grid grid-cols-1 gap-12 ">
         {loading ? (
@@ -85,14 +93,30 @@ const Page = () => {
                   />
                 )}
                 <p className="text-lg">by {question.qAuthor.name}</p>
-                <Link href={`/question/${question?._id}`}><Button>See details</Button></Link>
+                <Link
+                  onClick={() => {
+                    setRedirect({
+                      redirect: true,
+                      questionId: question._id as string,
+                    })
+                  }}
+                  href={`/question/${question?._id}`}
+                >
+                  <Button className="bg-blue-600">
+                    {redirect?.questionId == question?._id ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      "See details"
+                    )}
+                  </Button>
+                </Link>
               </div>
               <div>on {new Date(question.createdAt).toLocaleDateString()}</div>
             </div>
           ))
         )}
       </div>
-      <section className="flex items-center gap-8 my-20 w-full  justify-center">
+     {pgCount > 0 && <section className="flex items-center gap-8 my-20 w-full  justify-center">
         <Button
           disabled={currentPageNo === 1}
           onClick={() => {
@@ -124,7 +148,7 @@ const Page = () => {
         >
           Next
         </Button>
-      </section>
+      </section>}
     </div>
   )
 }

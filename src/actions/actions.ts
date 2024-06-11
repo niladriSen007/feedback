@@ -55,24 +55,28 @@ export const raiseQuestion = async (question: string, media: string[]) => {
 export const giveAnswer = async (
   questionId: string,
   answer: string,
+  media: string[],
   userId: string
 ) => {
   await dbConnection()
 
-  console.log(questionId,answer,userId, "Niladri")
+  console.log(questionId,answer,userId,media, "Niladri")
   try {
     const newAnswer = await new AnswerModel({
       answer,
+      media,
       question: questionId,
       aAuthor: userId,
     }).save()
+
+    console.log(newAnswer, "Niladri1")
 
 
     const question = await QuestionModel.findById(questionId)
     question?.answers.push(newAnswer)
     console.log(question, "Niladri2")
     await question?.save()
-    revalidatePath('/home')
+    revalidatePath('/questions/[questionId]')
     return {
       status: 200,
       success: true,

@@ -15,6 +15,8 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@react-email/components": "^0.0.19",
+    "@react-three/drei": "^9.106.0",
+    "@react-three/fiber": "^8.16.8",
     "ai": "^3.1.30",
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
@@ -34,6 +36,8 @@
     "resend": "^3.2.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "three": "^0.165.0",
+    "three-globe": "^2.31.0",
     "usehooks-ts": "^3.1.0",
     "zod": "^3.23.8"
   },
