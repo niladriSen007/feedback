@@ -7,6 +7,11 @@ const AnswerSchema: Schema<Answer> = new Schema(
       type: String,
       required: true,
     },
+    media: [
+      {
+        type: String,
+      },
+    ],
     aAuthor: {
       type: Schema.Types.ObjectId,
       ref: "User",

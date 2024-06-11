@@ -8,4 +8,5 @@ export interface Answer extends Document {
   question: Question
   createdAt: Date
   updatedAt: Date
+  media: string[]
 }
