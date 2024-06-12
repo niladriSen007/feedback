@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
 
     const isUserNameExist = await UserModel.findOne({
       name: userName,
-      isVerified: true,
+      /* isVerified: true, */
     })
 
     if (isUserNameExist) {

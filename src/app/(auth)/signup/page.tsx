@@ -57,7 +57,7 @@ const Page = () => {
           if (data.success) {
             setUserNameMessage(data.message)
           } else {
-            setUserNameMessage(data.error)
+            setUserNameMessage(data.message)
           }
         } catch (error) {
           console.log("Inside error")
@@ -82,13 +82,12 @@ const Page = () => {
 
       if (success) {
         toast(message, { type: "success" })
-
+        setIsSubmitting(false)
+        router.replace(`/verifyCode/${name}`)
       } else {
+        setIsSubmitting(false)
         toast(message, { type: "error" })
       }
-
-      setIsSubmitting(false)
-      router.replace(`/verifyCode/${name}`)
     } catch (error) {
       console.error("Error during sign-up:", error)
 
@@ -99,13 +98,13 @@ const Page = () => {
       ;("There was a problem with your sign-up. Please try again.")
 
       toast("Sign Up Failed", { type: "error" })
-      
+
       setIsSubmitting(false)
     }
   }
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
+    <div className="h-fit my-24 flex flex-col items-center justify-center">
       <div className="border flex flex-col gap-6  border-white shadow-2xl   shadow-violet-800 px-8 py-12 rounded-2xl max-w-sm">
         <h1 className="text-4xl font-bold text-center">
           Sign up to Queue{" "}

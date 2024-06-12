@@ -2,6 +2,7 @@
 import { dbConnection } from "@/lib/database/connection"
 import { AnswerModel } from "@/models/answerModel"
 import { QuestionModel } from "@/models/questionModel"
+import { Answer } from "@/types/answer.type"
 import axios from "axios"
 import { revalidatePath } from "next/cache"
 
@@ -65,6 +66,8 @@ export const giveAnswer = async (
     const newAnswer = await new AnswerModel({
       answer,
       media,
+      upvote: false,
+      downvote: false,
       question: questionId,
       aAuthor: userId,
     }).save()
@@ -77,6 +80,43 @@ export const giveAnswer = async (
     console.log(question, "Niladri2")
     await question?.save()
     revalidatePath('/questions/[questionId]')
+    return {
+      status: 200,
+      success: true,
+    }
+  } catch (error) {
+    return {
+      status: 400,
+      success: false,
+    }
+  }
+}
+
+
+export const upvoteOrDownvote = async (
+  answerId: string,
+  userId: string,
+  isUpvote: boolean,
+  isDownvote: boolean
+) => {
+  await dbConnection()
+  try {
+    const answer  = await AnswerModel.findById(answerId)
+
+    if (!answer) {
+      return {
+        status: 400,
+        success: false,
+      }
+    }
+    if (isUpvote) {
+      answer.upvote.push(userId)
+      answer.downvote = answer.downvote.filter((id) => id !== userId)
+    } else if (isDownvote) {
+      answer.downvote.push(userId)
+      answer.upvote = answer.upvote.filter((id) => id !== userId)
+    }
+    await answer.save()
     return {
       status: 200,
       success: true,

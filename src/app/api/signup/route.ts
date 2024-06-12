@@ -15,6 +15,7 @@ export async function POST(request: NextRequest) {
         status: 400,
       })
     }
+    console.log( name, email, password)
     const verifiedUserExistance = await UserModel.findOne({
       email,
       isVerified: true,
@@ -28,7 +29,9 @@ export async function POST(request: NextRequest) {
     }
 
     const unverifiedUserExistance = await UserModel.findOne({ email })
+    console.log(unverifiedUserExistance)
     const verifyToken = Math.floor(100000 + Math.random() * 900000).toString()
+    console.log(verifyToken)
     if (unverifiedUserExistance) {
       if (unverifiedUserExistance.isVerified) {
         return NextResponse.json({
@@ -54,14 +57,15 @@ export async function POST(request: NextRequest) {
         verificationCode: verifyToken,
         verificationExpiry: new Date(Date.now()).setHours(
           new Date(Date.now()).getHours() + 1
-        ),
-        isVerified: false,
-        questionsRaised: [],
-        answersGiven: [],
-      })
-      await newUser.save()
+          ),
+          isVerified: false,
+          questionsRaised: [],
+          answersGiven: [],
+          })
+          await newUser.save()
+          console.log("Inside else")
     }
-    console.log(email, name, verifyToken)
+    console.log(email, name, verifyToken,"XYZ")
     const sendEmail = await sendVerificationEmail(email, name, verifyToken)
 
     if (!sendEmail.success) {
@@ -79,7 +83,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     return NextResponse.json({
       success: false,
-      message: "Error creating user",
+      message: error.message,
       status: 500,
     })
   }
