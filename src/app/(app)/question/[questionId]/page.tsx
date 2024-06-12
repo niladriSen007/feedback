@@ -1,5 +1,5 @@
 "use client"
-import { getQuestion, giveAnswer } from "@/actions/actions"
+import { getQuestion, giveAnswer, upvoteOrDownvote } from "@/actions/actions"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -15,7 +15,7 @@ import { Answer } from "@/types/answer.type"
 import { Question } from "@/types/question.type"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
-import { Loader2 } from "lucide-react"
+import { BadgeCheck, Loader2, ThumbsDown, ThumbsUp } from "lucide-react"
 import { useSession } from "next-auth/react"
 import Image from "next/image"
 import { useParams } from "next/navigation"
@@ -40,7 +40,7 @@ const SingleQuestion = () => {
     console.log(data, "Niladri")
     setIsDataLoading(false)
     setQuestionDetails(data?.question)
-    setComments(data?.question?.answers)
+    setComments(data?.question?.answers?.reverse())
   }
 
   const form = useForm<z.infer<typeof answerSchema>>({
@@ -171,8 +171,8 @@ const SingleQuestion = () => {
             </Form>
             <div>
               {comments?.map((answer: Answer) => (
-                <div key={answer._id as string} className=" py-4 my-6">
-                  <span>{answer?.aAuthor?.name}</span>
+                <div key={answer?._id as string} className=" py-4 my-3">
+                  <span className="flex items-center gap-1">{answer?.aAuthor?.name} {answer?.aAuthor?.isVerified && <BadgeCheck className="text-blue-600" size={18} />}</span>
                   <p className="text-gray-400">{answer.answer}</p>
                   {answer?.media?.length > 0 &&
                     answer?.media?.map((media) => (
@@ -186,6 +186,35 @@ const SingleQuestion = () => {
                       />
                     ))}
                   {/* <p>By: {answer.userId}</p> */}
+                  <section className="flex items-center gap-3 mt-3">
+                  <section className="flex items-center gap-2   ">
+                  <ThumbsUp
+                      className="cursor-pointer"
+                      fill={ (answer?.upvote?.includes(userData?.user?._id as string)) ? "white" : "transparent"}
+                      onClick={() =>
+                        upvoteOrDownvote(
+                          answer?._id as string,
+                          userData?.user?._id as string,
+                          true,
+                          false
+                        )
+                      }
+                    />
+                    <span className="">{answer?.upvote?.length}</span>
+                  </section>
+                    <ThumbsDown
+                       fill={ (answer?.downvote?.includes(userData?.user?._id as string)) ? "white" : "transparent"}
+                      className="cursor-pointer"
+                      onClick={() =>
+                        upvoteOrDownvote(
+                          answer?._id as string,
+                          userData?.user?._id as string,
+                          false,
+                          true
+                        )
+                      }
+                    />
+                  </section>
                 </div>
               ))}
             </div>

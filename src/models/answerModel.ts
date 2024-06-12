@@ -12,6 +12,13 @@ const AnswerSchema: Schema<Answer> = new Schema(
         type: String,
       },
     ],
+    upvote: [{
+      type: String,
+      
+    }],
+    downvote: [{
+      type: String,
+    }],
     aAuthor: {
       type: Schema.Types.ObjectId,
       ref: "User",
